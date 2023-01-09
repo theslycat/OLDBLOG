@@ -1047,119 +1047,9 @@
 
     <!-- 首页公告 -->
     
-<style>
-  .index-notice-content {
-    margin-top: 10px;
-  }
-  .warp {
-    width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-  .index-notice-content__ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-  }
-  .index-notice-content__ul li,
-  .index-notice-content__ul a {
-    display: block;
-    height: 30px;
-    line-height: 30px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 15px;
-  }
-  .index-notice-content__title {
-    flex: 1;
-    overflow: hidden;
-  }
-  .index-notice-content__title a,
-  .index-notice-content__title span {
-    overflow: hidden;
-    display: block;
-    text-overflow:ellipsis; 
-    white-space: nowrap;
-    height: 100%;
-    width: 100%;
-    color: #000;
-  }
-  .index-notice-content__title a:hover,
-  .index-notice-content__title span:hover {
-    text-decoration: underline;
-  }
-  .index-notice-content__date {
-    min-width: 80px;
-    margin-left: 5px;
-    color: #000;
-  }
-</style>
-<div class="index-notice" id="appIndexNotice">
-    <h3>
-      <i class="fas fa-bullhorn index-notice-icon"></i>公告
-    </h3>
-    <div class="index-notice-content">
-      
-      <vue-seamless-scroll
-        :data="listData"
-        :class-option="classOption"
-        class="warp"
-        style="height: 0px"
-      >
-        <ul class="index-notice-content__ul">
-          
-           
-        </ul>
-      </vue-seamless-scroll>
-    </div>
-</div>
-<script src="/js/vue-seamless-scroll/index.js"></script>
-
-<!-- 滚动插件采用 vue-seamless-scroll
-  https://chenxuan0000.github.io/vue-seamless-scroll/zh/guide/06-singleStop.html 
--->
-
-<script>
-  var seamless = JSON.parse('false');
-  seamless = seamless ? 0 : 30;
-  var listData = '' || '';
-  listData = listData.split(',');
-  var vm = new Vue({
-    el: '#appIndexNotice',
-    data: {
-      listData: listData,
-      moveNum: 2,
-      classOption: {
-        singleHeight: seamless,
-        limitMoveNum: listData.length
-      },
-    },
-    computed: {
-    },
-    mounted() {
-    },
-    methods: {
-    },
-    created() {
-      this.moveNum = parseInt(this.listData.length);
-    }
-  })
-</script>
-
-
-
     <!-- 首页文章置顶 -->
     
 
-
-<div class="topArticle reveal">
-	<h3><i class="fas fa-thumbs-o-up" aria-hidden="true"></i>Recommend Articles</h3>
-	<div class="articles">
-		
-			
-		
-	</div>
-</div>
 
 
     <div class="bg-floor" id="home-bg-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
@@ -1170,6 +1060,55 @@
   
     
     <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-01-09</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/">某网剧里面爱心代码的html实现</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%91%B8%E9%B1%BC/" rel="tag">摸鱼</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            最近有一部国产电视剧特别火，虽然俺一贯是不看剧的，但是这玩意据说内含一些程序员和网安的要素，我还是去看了几集，里面最火的那个爱心动画，html实现如下：好吧，但是说实话那部剧作为一个讲述程序员故事的网剧是不合格的，细节毫无考究，内容也非常扯
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -1206,7 +1145,7 @@
         </div>
         <div class="post-more">
           <a href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -1302,7 +1241,7 @@
 
 
     <div class='content'>
-    <a href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6/" style="font-size: 14px; color: #999">恶意软件</a>
+    <a href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6/" style="font-size: 14px; color: #999">恶意软件</a> <a href="/tags/%E6%91%B8%E9%B1%BC/" style="font-size: 14px; color: #999">摸鱼</a>
     </div>
 </section>
 
@@ -1323,6 +1262,27 @@
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">01-09</span>
+                
+              </div>
+              <a class="post-title" href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/">某网剧里面爱心代码的html实现</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -1352,7 +1312,7 @@
       
   <section class="widget side_archives">
     
-    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">August 2022</span><span class="card-archive-list-count">1</span></a></li></ul></div>
+    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">January 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">August 2022</span><span class="card-archive-list-count">1</span></a></li></ul></div>
   </section>
 
       <section class="widget side_webinfo">
@@ -1369,7 +1329,7 @@
       
         <div class="webinfo-item">
           <div>文章数目：</div>
-          <div>1 篇</div>
+          <div>2 篇</div>
         </div>
       
 

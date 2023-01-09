@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>迟来了六年的CIA HIVE代码分析(介绍篇) | Hexo</title>
+  <title>archives: 2023/1 | Hexo</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -401,469 +401,106 @@
     
 </header>
         <!-- 内容区域 -->
-        
- <!-- prismjs 代码高亮 -->
- 
-
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        迟来了六年的CIA HIVE代码分析(介绍篇)
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> Published in：2022-08-12 |
-        </span>
-      
-
-      
-
-      
-    
+        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
+  <div class="archive-header-title">
+    archive
   </div>
+  <div class="archive-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content post-row" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h2 id="CIA-HIVE-简介"><a href="#CIA-HIVE-简介" class="headerlink" title="CIA HIVE 简介"></a>CIA HIVE 简介</h2><h4 id="CIA-HIVE"><a href="#CIA-HIVE" class="headerlink" title="CIA HIVE"></a>CIA HIVE</h4><p>Hive是CIA（中央情报局）旗下EDG所开发的网络武器，用于稳固初始访问权限，以便于后续投送更加高级的网络武器。</p>
-<p>该武器于2016年左右被Wikileaks作为Vault 7 的一部分被披露存在，直到2017年以Vault 8的代号公布源代码，可能是因为该工具危害性较大，所公布的源代码中删去了部分，导致代码并不完整，无法发挥真正的威力。</p>
-<h4 id="网络结构简介"><a href="#网络结构简介" class="headerlink" title="网络结构简介"></a>网络结构简介</h4><p>蜂巢平台采用C/S架构，主要由主控端（hclient）、远程控制平台（cutthroat，译为：“割喉”）、生成器（hive-patcher）、受控端程序（hived）等部分组成。为了掩护相关网络间谍行动，美中情局工程开发组还专门研发了一套名为“蜂房”（honeycomb）的管理系统，配合多层跳板服务器实现对大量遭受蜂巢平台感染的受害主机的远程隐蔽控制和数据归集。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-38e95244a8bd30f133ea5fda207b05e1_720w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-38e95244a8bd30f133ea5fda207b05e1_720w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<p>如上图所示，被植入Hive的主机通过安全的 VPN 连接将恶意植入软件相关的流量转发到隐藏的 CIA 服务器。为了逃避网络管理员的检测，还使用了伪造的卡巴斯基实验室数字证书。如果有人偶然访问到这些站点，封面（cover）服务器则会传送“<strong>无害</strong>”（innocent）的内容，因此访问者不会产生怀疑，只会觉得它是一个正常的网站。不过Hive使用了一个未被广泛使用的HTTPS服务器选项：可选客户端身份验证（Optional Client Authentication），这是普通非技术人员无法察觉到的。这样一来，由于浏览网站的普通用户不需要进行身份验证（因为这是可选的），于是他们看到的内容都是无害的（innocent）。但是与Hive的植入程序通过进行身份验证，使得其可以被Blot服务器检测到。来自植入程序的流量被发送到称为<strong>蜂窝（Honeycomb）</strong>的管理网关（参见上图），而那些来自非植入程序的流量则被转发到封面（cover）服务器，然后返回无害的内容。</p>
-
-      </div>
-      <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6/" class="">
-              恶意软件
-            </a>
-          
-        </div>
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>author:  </strong>John Doe</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>link:  </strong>
-    <a href="/2022/08/12/迟来了六年的CIA-HIVE代码分析/" target="_blank" title="迟来了六年的CIA HIVE代码分析(介绍篇)">https://theslycat.github.io/2022/08/12/迟来了六年的CIA-HIVE代码分析/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>Copyright notice:   </strong>
-      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      reprint policy. If reproduced, please indicate source!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> Prev:
-        <div class="title-text">某网剧里面爱心代码的html实现</div>
-      </div>
-      
-      <!-- <div class="content">
-        最近有一部国产电视剧特别火，虽然俺一贯是不看剧的，但是这玩意据说内含一些程序员和网安的要素，我还是去看了几集，里面最火的
-      </div> -->
-    </a>
-  </div>
-
-
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
+  <span class="title" id="archive-header-desc"></span>
+  <script>
+  function typedFn() {
+    const el = '#archive-header-desc';
+    const type = 'archive';
+    let desc = '岁月空冉冉，心曲且悠悠'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
   }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
+  typedFn();
+</script>
+  
   </div>
-
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
-
-
-  </div>
-
-  <!-- 目录 -->
-  
-<aside id='l_side'>
-  
-    
-      
-        <section class="widget side_blogger">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img src='https://tse3-mm.cn.bing.net/th/id/OIP-C.0UlAAn2W_2qh67IOpbtLBgHaHa?w=196&h=196&c=7&r=0&o=5&dpr=1.5&pid=1.7'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>星海横流，岁月成碑</h2>
-        
-        
-          <p>MALWARE IS LIVE</p>
-
-        
-        
-          <p><span id="jinrishici-sentence">Hexo</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="https://github.com/theslycat"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=3625017598"
-              class="social fab fa-qq flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
-</section>
-
-      
-    
-  
-  
-  
-
-  <div class="layout_sticky">    
-    
-      
-<section class="widget side_toc">
-  
-  <header>
-    
-      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="toc-main">
-      <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CIA-HIVE-%E7%AE%80%E4%BB%8B"><span class="toc-text">CIA HIVE 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CIA-HIVE"><span class="toc-text">CIA HIVE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%AE%80%E4%BB%8B"><span class="toc-text">网络结构简介</span></a></li></ol></li></ol></li></ol> -->
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 手机端目录按钮 -->
-<div id="toc-mobile-btn">
-  <i class="fas fa-list-ul" aria-hidden="true"></i>
+  <div class="mask-box"></div>
 </div>
 
+<div class="archive-video">
+  <video class="full-video" autoplay loop muted>
+      <source style="width: 100%;height: 100vh;" src="/">
+  </video>
+  <div class="video-header-title">
+    archive
+  </div>
+  <div class="video-header-desc">
+  
+      <span class="title" id="archive-video-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#archive-video-header-desc';
+    const type = 'archive';
+    let desc = '岁月空冉冉，心曲且悠悠'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
+</script>
       
-  <section class="widget side_recent_post">
-    
-  <header>
-    
-      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
-    
-  </header>
+  </div>
+  <div class="mask-box"></div>
+</div>
+
+<!-- hash算法 -->
 
 
-    <div class='content'>
-      
-      <!-- hash算法 -->
-      
-      <div class="aside-list">
+<div class="archive-main">
+  <section class="archive">
+    <div class="archive-content">
+      <ul class="post-archive">
         
-          <div class="aside-list-item">
+        
+          
             
+            <div class="year" data-aos="zoom-in-up">
+                <div class="bullet"></div>
+                <a href="/archives/2023">2023</a>
+            </div>
+          
+          <li class="post-item" data-aos="fade-left">
             
-            
-
             <div class="post-img-box">
               <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                
-                  <span class="post-date">01-09</span>
-                
+                <span class="post-date">01-09</span>
               </div>
               <a class="post-title" href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/">某网剧里面爱心代码的html实现</a>
             </div>
-          </div>
+          </li>
         
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" class="lazyload placeholder" data-srcset="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">08-12</span>
-                
-              </div>
-              <a class="post-title" href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">迟来了六年的CIA HIVE代码分析(介绍篇)</a>
-            </div>
-          </div>
-        
-      </div>
+      </ul>
     </div>
   </section>
-
+  <div class="w-70">
     
   </div>
-</aside>
-
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
 </div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
-  <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
-  
-</script>
-
 
       </main>
     </div>
