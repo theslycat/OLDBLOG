@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>archives | Theslycat的小博客～</title>
+  <title>信息熵在恶意shellcode中如何应用 | Theslycat的小博客～</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -401,146 +401,520 @@
     
 </header>
         <!-- 内容区域 -->
-        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
-  <div class="archive-header-title">
-    archive
-  </div>
-  <div class="archive-header-desc">
-  
-  <span class="title" id="archive-header-desc"></span>
-  <script>
-  function typedFn() {
-    const el = '#archive-header-desc';
-    const type = 'archive';
-    let desc = '岁月空冉冉，心曲且悠悠'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
-  
-  </div>
-  <div class="mask-box"></div>
-</div>
+        
+ <!-- prismjs 代码高亮 -->
+ 
 
-<div class="archive-video">
-  <video class="full-video" autoplay loop muted>
-      <source style="width: 100%;height: 100vh;" src="/">
-  </video>
-  <div class="video-header-title">
-    archive
-  </div>
-  <div class="video-header-desc">
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
-      <span class="title" id="archive-video-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#archive-video-header-desc';
-    const type = 'archive';
-    let desc = '岁月空冉冉，心曲且悠悠'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        信息熵在恶意shellcode中如何应用
+      </span>
+    </div>
+    
+    
       
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> Published in：2022-12-30 |
+        </span>
+      
+
+      
+
+      
+    
   </div>
-  <div class="mask-box"></div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
 </div>
 
-<!-- hash算法 -->
 
 
-<div class="archive-main">
-  <section class="archive">
-    <div class="archive-content">
-      <ul class="post-archive">
+
+
+<div class="post-detail-content post-row" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在编写恶意软件的过程中，最绕不开的一个话题就是shellcode, 在现代的恶意软件传播中，真正有效的载荷通常隐藏在“正常”的软件中，通过一系列的操作将其投放到内存中。反病毒软件显然注意到了这一点，对于软件中存在的大段数据，会进行检查。即使进行了加密，也会因为数据可疑而被标记。</p>
+<h4 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h4><p>令人疑惑的地方是，反病毒软件是如何分辨这段数据究竟是一个图片还是一段恶意的shellcode? 在初步判断时，可能并不需要什么启发式这种复杂、资源占用高的方法，相反，只需要判断该段数据的信息熵是否处于恶意软件的信息熵范围。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" class="lazyload placeholder" data-srcset="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="信息熵公式"></p>
+<p>信息量度量的是一个具体事件发生了所带来的信息，而熵则是在结果出来之前对可能产生的信息量的期望。推导如下：<br>$$<br>因为 h(x, y)=h(x)+h(y) p(x, y)=p(x)*p(y)  其中x,y为互不相关的事件<br>$$</p>
+<p>$$<br>h(x)=-log2p(x)<br>$$</p>
+<p> 考虑所有取值，即所有可能发生事件所带来的信息量的期望：<br>$$<br>𝐇(𝐱) = −𝒔𝒖𝒎(𝒑(𝒙)𝒍𝒐𝒈𝟐𝒑(𝒙))<br>$$<br>最后就得到了开头的公式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">entropy = <span class="number">0</span></span><br><span class="line">byte_counts = [<span class="number">21</span>, <span class="number">232</span>, <span class="number">33</span> , <span class="number">2123</span>, <span class="number">12</span>, <span class="number">1233</span>]</span><br><span class="line"><span class="keyword">for</span> count <span class="keyword">in</span> byte_counts:</span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    p = <span class="number">1.0</span> * count / total</span><br><span class="line">    entropy -= p * math.log(p, <span class="number">256</span>)</span><br><span class="line"><span class="built_in">print</span>(entropy)</span><br></pre></td></tr></table></figure>
+
+<h4 id="如何降低信息熵？"><a href="#如何降低信息熵？" class="headerlink" title="如何降低信息熵？"></a>如何降低信息熵？</h4><p>国外的一位研究者给出了答案：在shellcode中每隔几位插入一段低信息熵的字节，在loader阶段去掉这些字节。（出奇的简单）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Entropy.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">BYTE payload[] = &#123; <span class="number">0xfc</span>,<span class="number">0x48</span>,<span class="number">0x83</span>,<span class="number">0xe4</span>,<span class="number">0xf0</span>,<span class="number">0xe8</span>,<span class="number">0xc8</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x41</span>,<span class="number">0x51</span>,<span class="number">0x41</span>,<span class="number">0x50</span> ... <span class="number">0x36</span>,<span class="number">0x30</span>,<span class="number">0x00</span>,<span class="number">0x5e</span>,<span class="number">0x2e</span>,<span class="number">0x78</span>,<span class="number">0x90</span> &#125;; <span class="comment">// Simulated high entropy code</span></span><br><span class="line">constexpr <span class="type">int</span> number_of_chunks = <span class="number">5</span>; <span class="comment">// Number of chunks. You can randomize this too.</span></span><br><span class="line">constexpr <span class="type">int</span> chunk_size = <span class="keyword">sizeof</span> payload / number_of_chunks; <span class="comment">// Size of each chunk</span></span><br><span class="line">constexpr <span class="type">int</span> remaining_bytes = <span class="keyword">sizeof</span> payload % number_of_chunks; <span class="comment">// Remaining bytes after the last chunk is processed</span></span><br><span class="line">BYTE lowEntropyShellcode[<span class="keyword">sizeof</span> payload * <span class="number">2</span> - remaining_bytes] = &#123;<span class="number">0</span>&#125;; <span class="comment">// array of bytes size calculation to contain the original high entropy code plus the low entropy inserts</span></span><br><span class="line">constexpr <span class="type">int</span> payload_size_after_entropy_reduction = <span class="keyword">sizeof</span> payload * <span class="number">2</span>; <span class="comment">// Total size of the reduced entropy payload</span></span><br><span class="line">PBYTE <span class="title function_">shannonEncode</span><span class="params">(PBYTE rawShellcode)</span></span><br><span class="line">&#123;</span><br><span class="line">	constexpr <span class="type">int</span> max_n = <span class="number">0xEF</span>; <span class="comment">//239</span></span><br><span class="line">	constexpr <span class="type">int</span> min_n = <span class="number">0x01</span>; <span class="comment">//1</span></span><br><span class="line">	<span class="type">char</span> random_hex[chunk_size];</span><br><span class="line">	<span class="type">int</span> encodedShellcodeOffset = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> shellcodeOffset = <span class="number">0</span>;</span><br><span class="line">	<span class="type">const</span> BYTE new_n = static_cast&lt;BYTE&gt;((rand() % (max_n + <span class="number">1</span> - min_n) + min_n));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">char</span>&amp; i : random_hex)</span><br><span class="line">	&#123;</span><br><span class="line">		i = static_cast&lt;<span class="type">char</span>&gt;(new_n);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; number_of_chunks; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">size_t</span> j = <span class="number">0</span>; j &lt; chunk_size; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			lowEntropyShellcode[encodedShellcodeOffset] = rawShellcode[shellcodeOffset];</span><br><span class="line">			encodedShellcodeOffset++;</span><br><span class="line">			shellcodeOffset++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">const</span> <span class="type">char</span> k : random_hex)</span><br><span class="line">		&#123;</span><br><span class="line">			lowEntropyShellcode[encodedShellcodeOffset] = k;</span><br><span class="line">			encodedShellcodeOffset++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (remaining_bytes)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; <span class="keyword">sizeof</span> remaining_bytes; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			lowEntropyShellcode[encodedShellcodeOffset++] = rawShellcode[shellcodeOffset++];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> count = <span class="number">0</span>; count &lt; <span class="keyword">sizeof</span>(lowEntropyShellcode); count++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;0x%02X,&quot;</span>, lowEntropyShellcode[count]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> lowEntropyShellcode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原理如下：</p>
+<p>[^The concept is to divide the array into chunks and insert a low-entropy pattern of bytes between each chunk. When the sample is run, we must reconstruct the original payload in memory, bypassing the static detection of the high entropy code at this stage. It’s also worth noting that the low-entropy code to be inserted can follow a variety of patterns, and the amount of insertions can vary, thus it can be used to circumvent static signature detection. The second step is to combine the high entropy chunks of bytes with the low entropy chunks. Because, after all, we need to restore the obfuscated code to what it was initially in order to proceed to the de-obfuscation step, the third job will restore the original array of bytes by deleting the low entropy pattern]: </p>
+<p>出自该研究人员博客</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6/" class="">
+              恶意软件
+            </a>
+          
+            <a href="/tags/%E6%95%B0%E5%AD%A6/" class="">
+              数学
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>author:  </strong>老孙</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>link:  </strong>
+    <a href="/2022/12/30/信息熵在恶意shellcode中如何应用/" target="_blank" title="信息熵在恶意shellcode中如何应用">https://theslycat.github.io/2022/12/30/信息熵在恶意shellcode中如何应用/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>Copyright notice:   </strong>
+      All articles on this website, unless otherwise stated, adopt <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      reprint policy. If reproduced, please indicate source!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> Prev:
+        <div class="title-text">某网剧里面爱心代码的html实现</div>
+      </div>
+      
+      <!-- <div class="content">
+        最近有一部国产电视剧特别火，虽然俺一贯是不看剧的，但是这玩意据说内含一些程序员和网安的要素，我还是去看了几集，里面最火的
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" class="lazyload placeholder" data-srcset="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" class="post-nav-link">
+      <div class="title">
+        Next: <i class="fas fa-angle-right"></i>
+        <div class="title-text">迟来了六年的CIA HIVE代码分析(介绍篇)</div>
+      </div>
+      <!-- <div class="content">
+        CIA HIVE 简介CIA HIVEHive是CIA（中央情报局）旗下EDG所开发的网络武器，用于稳固初始访问权限，以
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  
+<aside id='l_side'>
+  
+    
+      
+        <section class="widget side_blogger">
+  <div class='content'>
+    
+      
+        <a class='avatar flat-box rectangle' href='/about/'>
+          <img src='https://tse3-mm.cn.bing.net/th/id/OIP-C.0UlAAn2W_2qh67IOpbtLBgHaHa?w=196&h=196&c=7&r=0&o=5&dpr=1.5&pid=1.7'/>
+        </a>
+      
+    
+    
+      <div class='text'>
+        
+          <h2>星海横流，岁月成碑</h2>
         
         
+          <p>MALWARE IS LIVE</p>
+
+        
+        
+          <p><span id="jinrishici-sentence">Theslycat的小博客～</span></p>
+          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
           
-            
-            <div class="year" data-aos="zoom-in-up">
-                <div class="bullet"></div>
-                <a href="/archives/2023">2023</a>
-            </div>
+            <a href="https://github.com/theslycat"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
           
-          <li class="post-item" data-aos="fade-left">
+        
+          
+            <a href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=3625017598"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+              
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+      
+    
+  
+  
+  
+
+  <div class="layout_sticky">    
+    
+      
+<section class="widget side_toc">
+  
+  <header>
+    
+      <i style="color: " class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+  <div class='content'>
+    <div class="toc-main">
+      <div class="toc-content">
+        <!-- <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC"><span class="toc-text">公式推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%99%8D%E4%BD%8E%E4%BF%A1%E6%81%AF%E7%86%B5%EF%BC%9F"><span class="toc-text">如何降低信息熵？</span></a></li></ol> -->
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 手机端目录按钮 -->
+<div id="toc-mobile-btn">
+  <i class="fas fa-list-ul" aria-hidden="true"></i>
+</div>
+
+      
+  <section class="widget side_recent_post">
+    
+  <header>
+    
+      <a style="color: " href='/tags/'><i class="fas fa-book fa-fw" aria-hidden="true"></i><span class='name'>最新文章</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      
+      <!-- hash算法 -->
+      
+      <div class="aside-list">
+        
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
               <a href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" class="lazyload placeholder" data-srcset="https://memeguy.com/photos/images/i-swear-all-women-hate-each-other-118726.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">01-09</span>
+                
+                  <span class="post-date">01-09</span>
+                
               </div>
               <a class="post-title" href="/2023/01/09/%E6%9F%90%E7%BD%91%E5%89%A7%E9%87%8C%E9%9D%A2%E7%88%B1%E5%BF%83%E4%BB%A3%E7%A0%81%E7%9A%84html%E5%AE%9E%E7%8E%B0/">某网剧里面爱心代码的html实现</a>
             </div>
-          </li>
+          </div>
         
-          
+          <div class="aside-list-item">
             
-            <div class="year" data-aos="zoom-in-up">
-                <div class="bullet"></div>
-                <a href="/archives/2022">2022</a>
-            </div>
-          
-          <li class="post-item" data-aos="fade-left">
             
+            
+
             <div class="post-img-box">
               <a href="/2022/12/30/%E4%BF%A1%E6%81%AF%E7%86%B5%E5%9C%A8%E6%81%B6%E6%84%8Fshellcode%E4%B8%AD%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" class="lazyload placeholder" data-srcset="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" class="lazyload placeholder" data-srcset="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvNzgxMzA1LzIwMTgwOC83ODEzMDUtMjAxODA4MTAxNjA2MDQxMzQtNjE3NTE0MzgyLnBuZw?x-oss-process=image/format,png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">12-30</span>
+                
+                  <span class="post-date">12-30</span>
+                
               </div>
               <a class="post-title" href="/2022/12/30/%E4%BF%A1%E6%81%AF%E7%86%B5%E5%9C%A8%E6%81%B6%E6%84%8Fshellcode%E4%B8%AD%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8/">信息熵在恶意shellcode中如何应用</a>
             </div>
-          </li>
+          </div>
         
-          
-          <li class="post-item" data-aos="fade-left">
+          <div class="aside-list-item">
             
+            
+            
+
             <div class="post-img-box">
               <a href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" class="lazyload placeholder" data-srcset="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" class="lazyload placeholder" data-srcset="https://tse1-mm.cn.bing.net/th/id/OIP-C.cr6Ze0-rk26cbcRBCbFOmgHaEj?w=277&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
               <div>
-                <span class="post-date">08-12</span>
+                
+                  <span class="post-date">08-12</span>
+                
               </div>
               <a class="post-title" href="/2022/08/12/%E8%BF%9F%E6%9D%A5%E4%BA%86%E5%85%AD%E5%B9%B4%E7%9A%84CIA-HIVE%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/">迟来了六年的CIA HIVE代码分析(介绍篇)</a>
             </div>
-          </li>
+          </div>
         
-      </ul>
+      </div>
     </div>
   </section>
-  <div class="w-70">
+
     
   </div>
+</aside>
+
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
 </div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
 
       </main>
     </div>
